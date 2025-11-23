@@ -36,6 +36,9 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
 import net.md_5.bungee.api.ChatColor;
 import net.minecraft.core.Vector3f;
+import net.minecraft.nbt.DynamicOpsNBT;
+import net.minecraft.nbt.NBTBase;
+import net.minecraft.network.chat.ComponentSerialization;
 import net.minecraft.network.chat.IChatBaseComponent;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientboundEntityPositionSyncPacket;
@@ -248,7 +251,15 @@ public class V1_21_8 extends NMSWrapper {
         if (tileEntity == null) {
             return "";
         }
-        return tileEntity.a(worldServer.K_()).i("CustomName").orElse("");
+        NBTBase nbtbase = tileEntity.a(worldServer.K_()).a("CustomName");
+        if (nbtbase == null) {
+            return "";
+        }
+        Optional<IChatBaseComponent> optChat = ComponentSerialization.a.parse(worldServer.K_().a(DynamicOpsNBT.a), nbtbase).resultOrPartial();
+        if (!optChat.isPresent()) {
+            return "";
+        }
+        return CraftChatMessage.toJSON(optChat.get());
     }
 
     @SuppressWarnings("unchecked")
