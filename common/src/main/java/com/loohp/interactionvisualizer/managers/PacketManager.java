@@ -31,6 +31,7 @@ import com.loohp.interactionvisualizer.nms.NMS;
 import com.loohp.interactionvisualizer.utils.LineOfSightUtils;
 import com.loohp.interactionvisualizer.utils.LocationUtils;
 import com.loohp.interactionvisualizer.utils.SyncUtils;
+import com.loohp.platformscheduler.Scheduler;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -159,7 +160,7 @@ public class PacketManager implements Listener {
     }
 
     public static void dynamicEntity() {
-        Bukkit.getScheduler().runTaskTimerAsynchronously(InteractionVisualizer.plugin, () -> {
+        Scheduler.runTaskTimerAsynchronously(InteractionVisualizer.plugin, () -> {
             Iterator<DynamicVisualizerEntity> itr = dynamicTracking.keySet().iterator();
             while (itr.hasNext()) {
                 DynamicVisualizerEntity entity = itr.next();
@@ -482,7 +483,7 @@ public class PacketManager implements Listener {
         };
 
         if (InteractionVisualizer.allPacketsSync) {
-            Bukkit.getScheduler().runTask(plugin, task);
+            Scheduler.runTask(plugin, task);
         } else {
             InteractionVisualizer.asyncExecutorManager.runTaskAsynchronously(task);
         }
@@ -601,9 +602,9 @@ public class PacketManager implements Listener {
     }
 
     public static void reset(Player theplayer) {
-        Bukkit.getScheduler().runTask(plugin, () -> removeAll(theplayer));
+        Scheduler.runTask(plugin, () -> removeAll(theplayer));
         int delay = 10 + (int) Math.ceil((double) active.size() / 5.0);
-        Bukkit.getScheduler().runTaskLater(plugin, () -> sendPlayerPackets(theplayer), delay);
+        Scheduler.runTaskLater(plugin, () -> sendPlayerPackets(theplayer), delay);
     }
 
     public static void removeAll(Player theplayer) {
@@ -624,13 +625,13 @@ public class PacketManager implements Listener {
                 }
                 VisualizerEntity entity = entry.getKey();
                 if (entity instanceof ArmorStand) {
-                    Bukkit.getScheduler().runTaskLater(plugin, () -> removeArmorStand(player, (ArmorStand) entity, false, false), delay);
+                    Scheduler.runTaskLater(plugin, () -> removeArmorStand(player, (ArmorStand) entity, false, false), delay);
                 }
                 if (entity instanceof Item) {
-                    Bukkit.getScheduler().runTaskLater(plugin, () -> removeItem(player, (Item) entity, false, false), delay);
+                    Scheduler.runTaskLater(plugin, () -> removeItem(player, (Item) entity, false, false), delay);
                 }
                 if (entity instanceof ItemFrame) {
-                    Bukkit.getScheduler().runTaskLater(plugin, () -> removeItemFrame(player, (ItemFrame) entity, false, false), delay);
+                    Scheduler.runTaskLater(plugin, () -> removeItemFrame(player, (ItemFrame) entity, false, false), delay);
                 }
             }
         });
@@ -657,19 +658,19 @@ public class PacketManager implements Listener {
                             count = 0;
                         }
                         if (entity instanceof ArmorStand) {
-                            Bukkit.getScheduler().runTaskLater(plugin, () -> {
+                            Scheduler.runTaskLater(plugin, () -> {
                                 sendArmorStandSpawn(player, (ArmorStand) entity);
                                 updateArmorStand(player, (ArmorStand) entity, true);
                             }, delay);
                         }
                         if (entity instanceof Item) {
-                            Bukkit.getScheduler().runTaskLater(plugin, () -> {
+                            Scheduler.runTaskLater(plugin, () -> {
                                 sendItemSpawn(player, (Item) entity);
                                 updateItem(player, (Item) entity, true);
                             }, delay);
                         }
                         if (entity instanceof ItemFrame) {
-                            Bukkit.getScheduler().runTaskLater(plugin, () -> {
+                            Scheduler.runTaskLater(plugin, () -> {
                                 sendItemFrameSpawn(player, (ItemFrame) entity);
                                 updateItemFrame(player, (ItemFrame) entity, true);
                             }, delay);

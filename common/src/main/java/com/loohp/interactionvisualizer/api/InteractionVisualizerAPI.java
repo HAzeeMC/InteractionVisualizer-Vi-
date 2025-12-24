@@ -31,6 +31,7 @@ import com.loohp.interactionvisualizer.managers.TileEntityManager;
 import com.loohp.interactionvisualizer.objectholders.EntryKey;
 import com.loohp.interactionvisualizer.objectholders.SynchronizedFilteredCollection;
 import com.loohp.interactionvisualizer.objectholders.TileEntity.TileEntityType;
+import com.loohp.platformscheduler.Scheduler;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -400,7 +401,7 @@ public class InteractionVisualizerAPI {
         PacketManager.sendItemSpawn(InteractionVisualizerAPI.getPlayerModuleList(Modules.ITEMDROP, entry), item);
         PacketManager.updateItem(item);
 
-        Bukkit.getScheduler().runTaskLater(InteractionVisualizer.plugin, () -> {
+        Scheduler.runTaskLater(InteractionVisualizer.plugin, () -> {
             if (pickupSound) {
                 SoundManager.playItemPickup(item.getLocation(), InteractionVisualizerAPI.getPlayerModuleList(Modules.ITEMDROP, entry));
             }

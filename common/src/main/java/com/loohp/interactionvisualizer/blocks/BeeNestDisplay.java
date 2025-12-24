@@ -33,8 +33,9 @@ import com.loohp.interactionvisualizer.managers.TileEntityManager;
 import com.loohp.interactionvisualizer.objectholders.EntryKey;
 import com.loohp.interactionvisualizer.objectholders.TileEntity.TileEntityType;
 import com.loohp.interactionvisualizer.utils.ChatColorUtils;
+import com.loohp.platformscheduler.ScheduledTask;
+import com.loohp.platformscheduler.Scheduler;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -91,8 +92,8 @@ public class BeeNestDisplay extends VisualizerRunnableDisplay implements Listene
     }
 
     @Override
-    public int gc() {
-        return Bukkit.getScheduler().runTaskTimerAsynchronously(InteractionVisualizer.plugin, () -> {
+    public ScheduledTask gc() {
+        return Scheduler.runTaskTimerAsynchronously(InteractionVisualizer.plugin, () -> {
             Iterator<Entry<Block, Map<String, Object>>> itr = beenestMap.entrySet().iterator();
             int count = 0;
             int maxper = (int) Math.ceil((double) beenestMap.size() / (double) gcPeriod);
@@ -104,7 +105,7 @@ public class BeeNestDisplay extends VisualizerRunnableDisplay implements Listene
                     delay++;
                 }
                 Entry<Block, Map<String, Object>> entry = itr.next();
-                Bukkit.getScheduler().runTaskLater(InteractionVisualizer.plugin, () -> {
+                Scheduler.runTaskLater(InteractionVisualizer.plugin, () -> {
                     Block block = entry.getKey();
                     if (!isActive(block.getLocation())) {
                         Map<String, Object> map = entry.getValue();
@@ -134,13 +135,13 @@ public class BeeNestDisplay extends VisualizerRunnableDisplay implements Listene
                     }
                 }, delay);
             }
-        }, 0, gcPeriod).getTaskId();
+        }, 0, gcPeriod);
     }
 
     @Override
-    public int run() {
-        return Bukkit.getScheduler().runTaskTimerAsynchronously(InteractionVisualizer.plugin, () -> {
-            Bukkit.getScheduler().runTask(InteractionVisualizer.plugin, () -> {
+    public ScheduledTask run() {
+        return Scheduler.runTaskTimerAsynchronously(InteractionVisualizer.plugin, () -> {
+            Scheduler.runTask(InteractionVisualizer.plugin, () -> {
                 Set<Block> list = nearbyBeenest();
                 for (Block block : list) {
                     if (beenestMap.get(block) == null && isActive(block.getLocation())) {
@@ -165,12 +166,12 @@ public class BeeNestDisplay extends VisualizerRunnableDisplay implements Listene
                     count = 0;
                     delay++;
                 }
-                Bukkit.getScheduler().runTaskLater(InteractionVisualizer.plugin, () -> {
+                Scheduler.runTaskLater(InteractionVisualizer.plugin, () -> {
                     Block block = entry.getKey();
                     updateBlock(block);
                 }, delay);
             }
-        }, 0, checkingPeriod).getTaskId();
+        }, 0, checkingPeriod);
     }
 
     @EventHandler(priority = EventPriority.MONITOR)
@@ -179,7 +180,7 @@ public class BeeNestDisplay extends VisualizerRunnableDisplay implements Listene
             return;
         }
         Block block = event.getBlock();
-        Bukkit.getScheduler().runTaskLater(InteractionVisualizer.plugin, () -> updateBlock(block), 1);
+        Scheduler.runTaskLater(InteractionVisualizer.plugin, () -> updateBlock(block), 1);
     }
 
     @EventHandler(priority = EventPriority.MONITOR)
@@ -188,7 +189,7 @@ public class BeeNestDisplay extends VisualizerRunnableDisplay implements Listene
             return;
         }
         Block block = event.getBlock();
-        Bukkit.getScheduler().runTaskLater(InteractionVisualizer.plugin, () -> updateBlock(block), 1);
+        Scheduler.runTaskLater(InteractionVisualizer.plugin, () -> updateBlock(block), 1);
     }
 
     @SuppressWarnings("deprecation")
@@ -199,7 +200,7 @@ public class BeeNestDisplay extends VisualizerRunnableDisplay implements Listene
         }
         Block block = event.getClickedBlock();
         if (block != null) {
-            Bukkit.getScheduler().runTaskLater(InteractionVisualizer.plugin, () -> updateBlock(block), 1);
+            Scheduler.runTaskLater(InteractionVisualizer.plugin, () -> updateBlock(block), 1);
         }
     }
 

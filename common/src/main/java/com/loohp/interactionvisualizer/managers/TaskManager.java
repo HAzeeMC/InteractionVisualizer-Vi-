@@ -61,6 +61,7 @@ import com.loohp.interactionvisualizer.entities.VillagerDisplay;
 import com.loohp.interactionvisualizer.objectholders.EntryKey;
 import com.loohp.interactionvisualizer.updater.Updater;
 import com.loohp.interactionvisualizer.utils.MCVersion;
+import com.loohp.platformscheduler.Scheduler;
 import com.loohp.yamlconfiguration.YamlConfiguration;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -161,7 +162,7 @@ public class TaskManager {
 		/*
 		HandlerList.unregisterAll(plugin);
 		for (int taskid : tasks) {
-			Bukkit.getScheduler().cancelTask(taskid);
+			Scheduler.cancelTask(taskid);
 		}
 		tasks.clear();
 		*/
@@ -443,7 +444,7 @@ public class TaskManager {
                 delay++;
             }
             UUID uuid = eachPlayer.getUniqueId();
-            Bukkit.getScheduler().runTaskLater(plugin, () -> {
+            Scheduler.runTaskLater(plugin, () -> {
                 Player player = Bukkit.getPlayer(uuid);
                 if (player == null) {
                     return;
@@ -453,7 +454,7 @@ public class TaskManager {
             }, delay);
         }
         next = next + delay;
-        Bukkit.getScheduler().runTaskLater(plugin, () -> run(), next);
+        Scheduler.runTaskLater(plugin, () -> run(), next);
     }
 
     private static YamlConfiguration getConfig() {

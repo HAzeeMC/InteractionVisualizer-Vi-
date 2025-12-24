@@ -30,7 +30,7 @@ import com.loohp.interactionvisualizer.objectholders.EntryKey;
 import com.loohp.interactionvisualizer.utils.CustomMapUtils;
 import com.loohp.interactionvisualizer.utils.InventoryUtils;
 import com.loohp.interactionvisualizer.utils.VanishUtils;
-import org.bukkit.Bukkit;
+import com.loohp.platformscheduler.Scheduler;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -133,7 +133,7 @@ public class EnchantmentTableDisplay extends VisualizerInteractDisplay implement
 
         ItemStack itemstack = view.getItem(0) != null && !view.getItem(0).getType().equals(Material.AIR) ? view.getItem(0).clone() : null;
 
-        Bukkit.getScheduler().runTaskLater(InteractionVisualizer.plugin, () -> {
+        Scheduler.runTaskLater(InteractionVisualizer.plugin, () -> {
             if (!animation.isEnchanting()) {
                 animation.queueSetItem(itemstack, a -> {
                     InventoryView inventory = player.getOpenInventory();
@@ -160,7 +160,7 @@ public class EnchantmentTableDisplay extends VisualizerInteractDisplay implement
         Block block = event.getEnchantBlock();
         Player player = event.getEnchanter();
 
-        Bukkit.getScheduler().runTaskLater(InteractionVisualizer.plugin, () -> {
+        Scheduler.runTaskLater(InteractionVisualizer.plugin, () -> {
             if (!player.getOpenInventory().getTopInventory().getType().equals(InventoryType.ENCHANTING)) {
                 return;
             }
@@ -229,7 +229,7 @@ public class EnchantmentTableDisplay extends VisualizerInteractDisplay implement
         ItemStack itemstack = event.getCurrentItem().clone();
         int slot = event.getRawSlot();
 
-        Bukkit.getScheduler().runTaskLater(InteractionVisualizer.plugin, () -> {
+        Scheduler.runTaskLater(InteractionVisualizer.plugin, () -> {
             if (player.getOpenInventory().getItem(slot) == null || (itemstack.isSimilar(player.getOpenInventory().getItem(slot)) && itemstack.getAmount() == player.getOpenInventory().getItem(slot).getAmount())) {
                 return;
             }
@@ -290,7 +290,7 @@ public class EnchantmentTableDisplay extends VisualizerInteractDisplay implement
 
         ItemStack itemstack = event.getView().getItem(0) != null ? (!event.getView().getItem(0).getType().equals(Material.AIR) ? event.getView().getItem(0).clone() : null) : null;
 
-        Bukkit.getScheduler().runTaskLater(InteractionVisualizer.plugin, () -> {
+        Scheduler.runTaskLater(InteractionVisualizer.plugin, () -> {
             EnchantmentTableAnimation animation = EnchantmentTableAnimation.getTableAnimation(block, player);
             if (animation == null) {
                 return;

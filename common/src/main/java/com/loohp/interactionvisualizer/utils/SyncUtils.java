@@ -22,6 +22,7 @@ package com.loohp.interactionvisualizer.utils;
 
 import com.loohp.interactionvisualizer.InteractionVisualizer;
 import com.loohp.interactionvisualizer.objectholders.Condition;
+import com.loohp.platformscheduler.Scheduler;
 import org.bukkit.Bukkit;
 
 public class SyncUtils {
@@ -32,7 +33,7 @@ public class SyncUtils {
                 InteractionVisualizer.asyncExecutorManager.runTaskAsynchronously(asyncTask);
             }
         } else if (InteractionVisualizer.plugin.isEnabled()) {
-            Bukkit.getScheduler().runTask(InteractionVisualizer.plugin, () -> {
+            Scheduler.runTask(InteractionVisualizer.plugin, () -> {
                 if (syncCondition.check()) {
                     InteractionVisualizer.asyncExecutorManager.runTaskAsynchronously(asyncTask);
                 }

@@ -28,6 +28,7 @@ import com.loohp.interactionvisualizer.objectholders.ChunkPosition;
 import com.loohp.interactionvisualizer.objectholders.NMSTileEntitySet;
 import com.loohp.interactionvisualizer.objectholders.TileEntity;
 import com.loohp.interactionvisualizer.objectholders.TileEntity.TileEntityType;
+import com.loohp.platformscheduler.Scheduler;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -71,7 +72,7 @@ public class TileEntityManager implements Listener {
         }
         TileEntityManager instance = new TileEntityManager();
         Bukkit.getPluginManager().registerEvents(instance, plugin);
-        Bukkit.getScheduler().runTaskTimerAsynchronously(plugin, () -> {
+        Scheduler.runTaskTimerAsynchronously(plugin, () -> {
             for (TileEntityType type : tileEntityTypes) {
                 Set<Block> blocks = active.get(type);
                 blocks.removeIf(block -> !PlayerLocationManager.hasPlayerNearby(block.getLocation()));
@@ -206,14 +207,14 @@ public class TileEntityManager implements Listener {
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onBreakBlock(BlockBreakEvent event) {
         if (TileEntity.isTileEntityType(event.getBlock().getType())) {
-            Bukkit.getScheduler().runTaskLater(plugin, () -> addTileEntities(getChunk(event.getBlock().getLocation())), 1);
+            Scheduler.runTaskLater(plugin, () -> addTileEntities(getChunk(event.getBlock().getLocation())), 1);
         }
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onPlaceBlock(BlockPlaceEvent event) {
         if (TileEntity.isTileEntityType(event.getBlock().getType())) {
-            Bukkit.getScheduler().runTaskLater(plugin, () -> addTileEntities(getChunk(event.getBlock().getLocation())), 1);
+            Scheduler.runTaskLater(plugin, () -> addTileEntities(getChunk(event.getBlock().getLocation())), 1);
         }
     }
 
@@ -228,7 +229,7 @@ public class TileEntityManager implements Listener {
                 chunks.add(getChunk(block.getLocation()));
             }
         }
-        Bukkit.getScheduler().runTaskLater(plugin, () -> addTileEntities(chunks), 1);
+        Scheduler.runTaskLater(plugin, () -> addTileEntities(chunks), 1);
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
@@ -239,13 +240,13 @@ public class TileEntityManager implements Listener {
                 chunks.add(getChunk(block.getLocation()));
             }
         }
-        Bukkit.getScheduler().runTaskLater(plugin, () -> addTileEntities(chunks), 1);
+        Scheduler.runTaskLater(plugin, () -> addTileEntities(chunks), 1);
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onEntityChangeBlock(EntityChangeBlockEvent event) {
         if (TileEntity.isTileEntityType(event.getBlock().getType())) {
-            Bukkit.getScheduler().runTaskLater(plugin, () -> addTileEntities(getChunk(event.getBlock().getLocation())), 1);
+            Scheduler.runTaskLater(plugin, () -> addTileEntities(getChunk(event.getBlock().getLocation())), 1);
         }
     }
 

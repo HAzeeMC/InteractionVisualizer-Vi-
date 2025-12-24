@@ -32,12 +32,12 @@ import com.loohp.interactionvisualizer.utils.ComponentFont;
 import com.loohp.interactionvisualizer.utils.CustomStringUtils;
 import com.loohp.interactionvisualizer.utils.RomanNumberUtils;
 import com.loohp.interactionvisualizer.utils.TranslationUtils;
+import com.loohp.platformscheduler.Scheduler;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TranslatableComponent;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import net.md_5.bungee.api.ChatColor;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Particle;
@@ -160,7 +160,7 @@ public class EnchantmentTableAnimation {
             each.spawnParticle(Particle.PORTAL, location.clone().add(0.5, 2.6, 0.5), 200);
         }
 
-        Bukkit.getScheduler().runTaskLater(plugin, () -> {
+        Scheduler.runTaskLater(plugin, () -> {
             item.teleport(location.clone().add(0.5, 2.3, 0.5));
             item.setVelocity(new Vector(0, 0, 0));
             PacketManager.updateItem(item);
@@ -168,7 +168,7 @@ public class EnchantmentTableAnimation {
 
         List<ArmorStand> stands = new LinkedList<>();
 
-        Bukkit.getScheduler().runTaskLater(plugin, () -> {
+        Scheduler.runTaskLater(plugin, () -> {
             Location standloc = item.getLocation().add(0.0, 0.5, 0.0);
             for (Entry<Enchantment, Integer> entry : enchantsToAdd.entrySet()) {
                 Enchantment ench = entry.getKey();
@@ -220,7 +220,7 @@ public class EnchantmentTableAnimation {
             PacketManager.updateItem(item);
         }, 50);
 
-        Bukkit.getScheduler().runTaskLater(plugin, () -> {
+        Scheduler.runTaskLater(plugin, () -> {
             while (!stands.isEmpty()) {
                 ArmorStand stand = stands.remove(0);
                 PacketManager.removeArmorStand(InteractionVisualizerAPI.getPlayers(), stand);
@@ -229,7 +229,7 @@ public class EnchantmentTableAnimation {
             PacketManager.updateItem(item);
         }, 90);
 
-        Bukkit.getScheduler().runTaskLater(plugin, () -> {
+        Scheduler.runTaskLater(plugin, () -> {
             item.teleport(location.clone().add(0.5, 1.3, 0.5));
             item.setGravity(false);
             PacketManager.updateItem(item);
@@ -263,7 +263,7 @@ public class EnchantmentTableAnimation {
         item.setPickupDelay(32767);
         PacketManager.updateItem(item);
 
-        Bukkit.getScheduler().runTaskLater(plugin, () -> {
+        Scheduler.runTaskLater(plugin, () -> {
             SoundManager.playItemPickup(item.getLocation(), InteractionVisualizerAPI.getPlayerModuleList(Modules.ITEMDROP, KEY));
             PacketManager.removeItem(InteractionVisualizerAPI.getPlayers(), item);
             this.item = Optional.empty();
@@ -274,7 +274,7 @@ public class EnchantmentTableAnimation {
 
     private CompletableFuture<Integer> close() {
         CompletableFuture<Integer> future = new CompletableFuture<>();
-        Bukkit.getScheduler().runTask(plugin, () -> {
+        Scheduler.runTask(plugin, () -> {
             if (this.item.isPresent()) {
                 PacketManager.removeItem(InteractionVisualizerAPI.getPlayers(), item.get());
             }
@@ -286,7 +286,7 @@ public class EnchantmentTableAnimation {
     private CompletableFuture<Integer> setItemStack(ItemStack itemstack) {
         CompletableFuture<Integer> future = new CompletableFuture<>();
 
-        Bukkit.getScheduler().runTask(plugin, () -> {
+        Scheduler.runTask(plugin, () -> {
             if (itemstack == null || itemstack.getType().equals(Material.AIR)) {
                 clearItemStack();
                 future.complete(SET_ITEM);

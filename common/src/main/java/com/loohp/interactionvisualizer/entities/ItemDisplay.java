@@ -35,6 +35,8 @@ import com.loohp.interactionvisualizer.utils.ComponentFont;
 import com.loohp.interactionvisualizer.utils.ItemNameUtils;
 import com.loohp.interactionvisualizer.utils.LineOfSightUtils;
 import com.loohp.interactionvisualizer.utils.SyncUtils;
+import com.loohp.platformscheduler.ScheduledRunnable;
+import com.loohp.platformscheduler.ScheduledTask;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextReplacementConfig;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
@@ -51,7 +53,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -125,13 +126,13 @@ public class ItemDisplay extends VisualizerRunnableDisplay implements Listener {
     }
 
     @Override
-    public int gc() {
-        return -1;
+    public ScheduledTask gc() {
+        return null;
     }
 
     @Override
-    public int run() {
-        return new BukkitRunnable() {
+    public ScheduledTask run() {
+        return new ScheduledRunnable() {
             int i = 0;
 
             @Override
@@ -153,7 +154,7 @@ public class ItemDisplay extends VisualizerRunnableDisplay implements Listener {
                     }
                 }
             }
-        }.runTaskTimer(InteractionVisualizer.plugin, 0, 1).getTaskId();
+        }.runTaskTimer(InteractionVisualizer.plugin, 0, 1);
     }
 
     private void tick(Item item, Collection<Item> items) {

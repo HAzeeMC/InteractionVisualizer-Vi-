@@ -30,10 +30,11 @@ import com.loohp.interactionvisualizer.managers.PacketManager;
 import com.loohp.interactionvisualizer.objectholders.EntryKey;
 import com.loohp.interactionvisualizer.utils.ItemNameUtils;
 import com.loohp.interactionvisualizer.utils.MCVersion;
+import com.loohp.platformscheduler.ScheduledTask;
+import com.loohp.platformscheduler.Scheduler;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import net.md_5.bungee.api.ChatColor;
-import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -66,13 +67,13 @@ public class NoteBlockDisplay extends VisualizerRunnableDisplay implements Liste
     }
 
     @Override
-    public int gc() {
-        return -1;
+    public ScheduledTask gc() {
+        return null;
     }
 
     @Override
-    public int run() {
-        return Bukkit.getScheduler().runTaskTimerAsynchronously(InteractionVisualizer.plugin, () -> {
+    public ScheduledTask run() {
+        return Scheduler.runTaskTimerAsynchronously(InteractionVisualizer.plugin, () -> {
             Iterator<Entry<Block, ConcurrentHashMap<String, Object>>> itr = displayingNotes.entrySet().iterator();
             while (itr.hasNext()) {
                 Entry<Block, ConcurrentHashMap<String, Object>> entry = itr.next();
@@ -80,11 +81,11 @@ public class NoteBlockDisplay extends VisualizerRunnableDisplay implements Liste
                 long timeout = (long) entry.getValue().get("Timeout");
                 if (unix > timeout) {
                     ArmorStand stand = (ArmorStand) entry.getValue().get("Stand");
-                    Bukkit.getScheduler().runTask(InteractionVisualizer.plugin, () -> PacketManager.removeArmorStand(InteractionVisualizerAPI.getPlayers(), stand));
+                    Scheduler.runTask(InteractionVisualizer.plugin, () -> PacketManager.removeArmorStand(InteractionVisualizerAPI.getPlayers(), stand));
                     itr.remove();
                 }
             }
-        }, 0, 20).getTaskId();
+        }, 0, 20);
     }
 
     @SuppressWarnings("deprecation")
@@ -110,7 +111,7 @@ public class NoteBlockDisplay extends VisualizerRunnableDisplay implements Liste
 
         BlockFace face = event.getBlockFace();
         Location textLocation = getFaceOffset(block, face);
-        Bukkit.getScheduler().runTaskLater(InteractionVisualizer.plugin, () -> {
+        Scheduler.runTaskLater(InteractionVisualizer.plugin, () -> {
             if (!block.getType().equals(Material.NOTE_BLOCK)) {
                 return;
             }

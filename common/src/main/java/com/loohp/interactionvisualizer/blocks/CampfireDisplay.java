@@ -33,8 +33,9 @@ import com.loohp.interactionvisualizer.managers.TileEntityManager;
 import com.loohp.interactionvisualizer.objectholders.EntryKey;
 import com.loohp.interactionvisualizer.objectholders.TileEntity.TileEntityType;
 import com.loohp.interactionvisualizer.utils.ChatColorUtils;
+import com.loohp.platformscheduler.ScheduledTask;
+import com.loohp.platformscheduler.Scheduler;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -88,8 +89,8 @@ public class CampfireDisplay extends VisualizerRunnableDisplay implements Listen
     }
 
     @Override
-    public int gc() {
-        return Bukkit.getScheduler().runTaskTimerAsynchronously(InteractionVisualizer.plugin, () -> {
+    public ScheduledTask gc() {
+        return Scheduler.runTaskTimerAsynchronously(InteractionVisualizer.plugin, () -> {
             Iterator<Entry<Block, Map<String, Object>>> itr = campfireMap.entrySet().iterator();
             int count = 0;
             int maxper = (int) Math.ceil((double) campfireMap.size() / (double) gcPeriod);
@@ -101,7 +102,7 @@ public class CampfireDisplay extends VisualizerRunnableDisplay implements Listen
                     delay++;
                 }
                 Entry<Block, Map<String, Object>> entry = itr.next();
-                Bukkit.getScheduler().runTaskLater(InteractionVisualizer.plugin, () -> {
+                Scheduler.runTaskLater(InteractionVisualizer.plugin, () -> {
                     Block block = entry.getKey();
                     if (!isActive(block.getLocation())) {
                         Map<String, Object> map = entry.getValue();
@@ -147,13 +148,13 @@ public class CampfireDisplay extends VisualizerRunnableDisplay implements Listen
                     }
                 }, delay);
             }
-        }, 0, gcPeriod).getTaskId();
+        }, 0, gcPeriod);
     }
 
     @Override
-    public int run() {
-        return Bukkit.getScheduler().runTaskTimerAsynchronously(InteractionVisualizer.plugin, () -> {
-            Bukkit.getScheduler().runTask(InteractionVisualizer.plugin, () -> {
+    public ScheduledTask run() {
+        return Scheduler.runTaskTimerAsynchronously(InteractionVisualizer.plugin, () -> {
+            Scheduler.runTask(InteractionVisualizer.plugin, () -> {
                 Set<Block> list = nearbyCampfire();
                 for (Block block : list) {
                     if (campfireMap.get(block) == null && isActive(block.getLocation())) {
@@ -178,7 +179,7 @@ public class CampfireDisplay extends VisualizerRunnableDisplay implements Listen
                     count = 0;
                     delay++;
                 }
-                Bukkit.getScheduler().runTaskLater(InteractionVisualizer.plugin, () -> {
+                Scheduler.runTaskLater(InteractionVisualizer.plugin, () -> {
                     Block block = entry.getKey();
                     if (!isActive(block.getLocation())) {
                         return;
@@ -355,7 +356,7 @@ public class CampfireDisplay extends VisualizerRunnableDisplay implements Listen
                     });
                 }, delay);
             }
-        }, 0, checkingPeriod).getTaskId();
+        }, 0, checkingPeriod);
     }
 
     @EventHandler(priority = EventPriority.MONITOR)

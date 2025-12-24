@@ -21,6 +21,7 @@
 package com.loohp.interactionvisualizer.managers;
 
 import com.loohp.interactionvisualizer.InteractionVisualizer;
+import com.loohp.platformscheduler.Scheduler;
 import org.bukkit.Bukkit;
 
 import java.util.concurrent.ExecutorService;
@@ -47,7 +48,7 @@ public class AsyncExecutorManager implements AutoCloseable {
         if (!valid.get()) {
             return;
         }
-        Bukkit.getScheduler().runTaskLater(InteractionVisualizer.plugin, () -> runTaskAsynchronously(runnable), delay);
+        Scheduler.runTaskLater(InteractionVisualizer.plugin, () -> runTaskAsynchronously(runnable), delay);
     }
 
     public boolean isValid() {

@@ -20,6 +20,7 @@
 
 package com.loohp.interactionvisualizer.objectholders;
 
+import com.loohp.platformscheduler.ScheduledTask;
 import org.bukkit.Location;
 
 public interface ILightManager {
@@ -27,8 +28,8 @@ public interface ILightManager {
     ILightManager DUMMY_INSTANCE = new ILightManager() {
 
         @Override
-        public int run() {
-            return -1;
+        public ScheduledTask run() {
+            return null;
         }
 
         @Override
@@ -46,6 +47,6 @@ public interface ILightManager {
 
     void deleteLight(Location location);
 
-    int run();
+    ScheduledTask run();
 
 }

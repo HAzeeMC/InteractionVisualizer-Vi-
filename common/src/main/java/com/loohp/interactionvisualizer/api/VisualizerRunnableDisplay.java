@@ -22,7 +22,7 @@ package com.loohp.interactionvisualizer.api;
 
 import com.loohp.interactionvisualizer.managers.TaskManager;
 import com.loohp.interactionvisualizer.objectholders.EntryKey;
-import org.bukkit.Bukkit;
+import com.loohp.platformscheduler.ScheduledTask;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -35,17 +35,17 @@ public abstract class VisualizerRunnableDisplay implements VisualizerDisplay {
     /**
      * DO NOT CHANGE THESE FIELD
      */
-    private Set<Integer> tasks;
+    private Set<ScheduledTask> tasks;
 
     /**
-     * This method is used for cleaning up, return the task id, return -1 to disable
+     * This method is used for cleaning up, return the ScheduledTask, return null to disable.
      */
-    public abstract int gc();
+    public abstract ScheduledTask gc();
 
     /**
-     * This method is used for a runnable, return the task id, return -1 to disable
+     * This method is used for a runnable, return the ScheduledTask, return null to disable.
      */
-    public abstract int run();
+    public abstract ScheduledTask run();
 
     /**
      * Register this custom display to InteractionVisualizer.
@@ -57,12 +57,12 @@ public abstract class VisualizerRunnableDisplay implements VisualizerDisplay {
         InteractionVisualizerAPI.getPreferenceManager().registerEntry(key());
         TaskManager.runnables.add(this);
         this.tasks = new HashSet<>();
-        int gc = gc();
-        if (gc >= 0) {
+        ScheduledTask gc = gc();
+        if (gc != null) {
             this.tasks.add(gc);
         }
-        int run = run();
-        if (run >= 0) {
+        ScheduledTask run = run();
+        if (run != null) {
             this.tasks.add(run);
         }
     }
@@ -71,12 +71,12 @@ public abstract class VisualizerRunnableDisplay implements VisualizerDisplay {
     public final EntryKey registerNative() {
         TaskManager.runnables.add(this);
         this.tasks = new HashSet<>();
-        int gc = gc();
-        if (gc >= 0) {
+        ScheduledTask gc = gc();
+        if (gc != null) {
             this.tasks.add(gc);
         }
-        int run = run();
-        if (run >= 0) {
+        ScheduledTask run = run();
+        if (run != null) {
             this.tasks.add(run);
         }
         return key();
@@ -89,7 +89,7 @@ public abstract class VisualizerRunnableDisplay implements VisualizerDisplay {
     @Deprecated
     public final void unregister() {
         TaskManager.runnables.remove(this);
-        this.tasks.forEach(each -> Bukkit.getScheduler().cancelTask(each));
+        this.tasks.forEach(each -> each.cancel());
     }
 
 }

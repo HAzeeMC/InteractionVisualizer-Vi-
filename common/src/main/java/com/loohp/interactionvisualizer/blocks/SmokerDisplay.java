@@ -37,9 +37,10 @@ import com.loohp.interactionvisualizer.utils.ChatColorUtils;
 import com.loohp.interactionvisualizer.utils.InventoryUtils;
 import com.loohp.interactionvisualizer.utils.MCVersion;
 import com.loohp.interactionvisualizer.utils.VanishUtils;
+import com.loohp.platformscheduler.ScheduledTask;
+import com.loohp.platformscheduler.Scheduler;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import net.md_5.bungee.api.ChatColor;
-import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -103,8 +104,8 @@ public class SmokerDisplay extends VisualizerRunnableDisplay implements Listener
     }
 
     @Override
-    public int gc() {
-        return Bukkit.getScheduler().runTaskTimerAsynchronously(InteractionVisualizer.plugin, () -> {
+    public ScheduledTask gc() {
+        return Scheduler.runTaskTimerAsynchronously(InteractionVisualizer.plugin, () -> {
             Iterator<Entry<Block, Map<String, Object>>> itr = smokerMap.entrySet().iterator();
             int count = 0;
             int maxper = (int) Math.ceil((double) smokerMap.size() / (double) gcPeriod);
@@ -116,7 +117,7 @@ public class SmokerDisplay extends VisualizerRunnableDisplay implements Listener
                     delay++;
                 }
                 Entry<Block, Map<String, Object>> entry = itr.next();
-                Bukkit.getScheduler().runTaskLater(InteractionVisualizer.plugin, () -> {
+                Scheduler.runTaskLater(InteractionVisualizer.plugin, () -> {
                     Block block = entry.getKey();
                     if (!isActive(block.getLocation())) {
                         Map<String, Object> map = entry.getValue();
@@ -146,13 +147,13 @@ public class SmokerDisplay extends VisualizerRunnableDisplay implements Listener
                     }
                 }, delay);
             }
-        }, 0, gcPeriod).getTaskId();
+        }, 0, gcPeriod);
     }
 
     @Override
-    public int run() {
-        return Bukkit.getScheduler().runTaskTimerAsynchronously(InteractionVisualizer.plugin, () -> {
-            Bukkit.getScheduler().runTask(InteractionVisualizer.plugin, () -> {
+    public ScheduledTask run() {
+        return Scheduler.runTaskTimerAsynchronously(InteractionVisualizer.plugin, () -> {
+            Scheduler.runTask(InteractionVisualizer.plugin, () -> {
                 Set<Block> list = nearbySmoker();
                 for (Block block : list) {
                     if (smokerMap.get(block) == null && isActive(block.getLocation())) {
@@ -178,7 +179,7 @@ public class SmokerDisplay extends VisualizerRunnableDisplay implements Listener
                     count = 0;
                     delay++;
                 }
-                Bukkit.getScheduler().runTaskLater(InteractionVisualizer.plugin, () -> {
+                Scheduler.runTaskLater(InteractionVisualizer.plugin, () -> {
                     Block block = entry.getKey();
                     if (!isActive(block.getLocation())) {
                         return;
@@ -289,7 +290,7 @@ public class SmokerDisplay extends VisualizerRunnableDisplay implements Listener
                     });
                 }, delay);
             }
-        }, 0, checkingPeriod).getTaskId();
+        }, 0, checkingPeriod);
     }
 
     @EventHandler(priority = EventPriority.MONITOR)
@@ -367,7 +368,7 @@ public class SmokerDisplay extends VisualizerRunnableDisplay implements Listener
         Location loc = block.getLocation();
         Player player = (Player) event.getWhoClicked();
 
-        Bukkit.getScheduler().runTaskLater(InteractionVisualizer.plugin, () -> {
+        Scheduler.runTaskLater(InteractionVisualizer.plugin, () -> {
 
             if (player.getOpenInventory().getItem(slot) == null || (itemstack.isSimilar(player.getOpenInventory().getItem(slot)) && itemstack.getAmount() == player.getOpenInventory().getItem(slot).getAmount())) {
                 return;
@@ -389,7 +390,7 @@ public class SmokerDisplay extends VisualizerRunnableDisplay implements Listener
             item.setPickupDelay(32767);
             PacketManager.updateItem(item);
 
-            Bukkit.getScheduler().runTaskLater(InteractionVisualizer.plugin, () -> {
+            Scheduler.runTaskLater(InteractionVisualizer.plugin, () -> {
                 SoundManager.playItemPickup(item.getLocation(), InteractionVisualizerAPI.getPlayerModuleList(Modules.ITEMDROP, KEY));
                 PacketManager.removeItem(InteractionVisualizerAPI.getPlayers(), item);
             }, 8);

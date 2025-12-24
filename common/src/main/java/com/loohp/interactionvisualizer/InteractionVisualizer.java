@@ -42,6 +42,7 @@ import com.loohp.interactionvisualizer.placeholderAPI.Placeholders;
 import com.loohp.interactionvisualizer.updater.Updater;
 import com.loohp.interactionvisualizer.updater.Updater.UpdaterResponse;
 import com.loohp.interactionvisualizer.utils.MCVersion;
+import com.loohp.platformscheduler.Scheduler;
 import com.loohp.yamlconfiguration.YamlConfiguration;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
@@ -235,7 +236,7 @@ public class InteractionVisualizer extends JavaPlugin {
         
         getServer().getConsoleSender().sendMessage(ChatColor.GREEN + "[InteractionVisualizer] InteractionVisualizer has been enabled!");
 
-        Bukkit.getScheduler().runTask(this, () -> {
+        Scheduler.runTask(this, () -> {
             for (Player player : Bukkit.getOnlinePlayers()) {
                 PacketManager.playerStatus.put(player, ConcurrentHashMap.newKeySet());
             }

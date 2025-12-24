@@ -35,8 +35,9 @@ import com.loohp.interactionvisualizer.managers.TileEntityManager;
 import com.loohp.interactionvisualizer.objectholders.EntryKey;
 import com.loohp.interactionvisualizer.objectholders.TileEntity.TileEntityType;
 import com.loohp.interactionvisualizer.utils.ChatColorUtils;
+import com.loohp.platformscheduler.ScheduledTask;
+import com.loohp.platformscheduler.Scheduler;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
-import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -89,8 +90,8 @@ public class SpawnerDisplay extends VisualizerRunnableDisplay implements Listene
     }
 
     @Override
-    public int gc() {
-        return Bukkit.getScheduler().runTaskTimerAsynchronously(InteractionVisualizer.plugin, () -> {
+    public ScheduledTask gc() {
+        return Scheduler.runTaskTimerAsynchronously(InteractionVisualizer.plugin, () -> {
             Iterator<Entry<Block, Map<String, Object>>> itr = spawnerMap.entrySet().iterator();
             int count = 0;
             int maxper = (int) Math.ceil((double) spawnerMap.size() / (double) gcPeriod);
@@ -102,7 +103,7 @@ public class SpawnerDisplay extends VisualizerRunnableDisplay implements Listene
                     delay++;
                 }
                 Entry<Block, Map<String, Object>> entry = itr.next();
-                Bukkit.getScheduler().runTaskLater(InteractionVisualizer.plugin, () -> {
+                Scheduler.runTaskLater(InteractionVisualizer.plugin, () -> {
                     Block block = entry.getKey();
                     if (!isActive(block.getLocation())) {
                         Map<String, Object> map = entry.getValue();
@@ -124,13 +125,13 @@ public class SpawnerDisplay extends VisualizerRunnableDisplay implements Listene
                     }
                 }, delay);
             }
-        }, 0, gcPeriod).getTaskId();
+        }, 0, gcPeriod);
     }
 
     @Override
-    public int run() {
-        return Bukkit.getScheduler().runTaskTimerAsynchronously(InteractionVisualizer.plugin, () -> {
-            Bukkit.getScheduler().runTask(InteractionVisualizer.plugin, () -> {
+    public ScheduledTask run() {
+        return Scheduler.runTaskTimerAsynchronously(InteractionVisualizer.plugin, () -> {
+            Scheduler.runTask(InteractionVisualizer.plugin, () -> {
                 Set<Block> list = nearbySpawner();
                 for (Block block : list) {
                     if (spawnerMap.get(block) == null && isActive(block.getLocation())) {
@@ -155,7 +156,7 @@ public class SpawnerDisplay extends VisualizerRunnableDisplay implements Listene
                     count = 0;
                     delay++;
                 }
-                Bukkit.getScheduler().runTaskLater(InteractionVisualizer.plugin, () -> {
+                Scheduler.runTaskLater(InteractionVisualizer.plugin, () -> {
                     Block block = entry.getKey();
                     if (!isActive(block.getLocation())) {
                         return;
@@ -208,7 +209,7 @@ public class SpawnerDisplay extends VisualizerRunnableDisplay implements Listene
                     });
                 }, delay);
             }
-        }, 0, checkingPeriod).getTaskId();
+        }, 0, checkingPeriod);
     }
 
     @EventHandler(priority = EventPriority.MONITOR)

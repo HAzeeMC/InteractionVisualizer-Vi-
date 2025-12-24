@@ -38,12 +38,13 @@ import com.loohp.interactionvisualizer.utils.ColorUtils;
 import com.loohp.interactionvisualizer.utils.ComponentFont;
 import com.loohp.interactionvisualizer.utils.RomanNumberUtils;
 import com.loohp.interactionvisualizer.utils.TranslationUtils;
+import com.loohp.platformscheduler.ScheduledTask;
+import com.loohp.platformscheduler.Scheduler;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TranslatableComponent;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import net.md_5.bungee.api.ChatColor;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Beacon;
@@ -101,8 +102,8 @@ public class BeaconDisplay extends VisualizerRunnableDisplay implements Listener
     }
 
     @Override
-    public int gc() {
-        return Bukkit.getScheduler().runTaskTimerAsynchronously(InteractionVisualizer.plugin, () -> {
+    public ScheduledTask gc() {
+        return Scheduler.runTaskTimerAsynchronously(InteractionVisualizer.plugin, () -> {
             Iterator<Entry<Block, Map<String, Object>>> itr = beaconMap.entrySet().iterator();
             int count = 0;
             int maxper = (int) Math.ceil((double) beaconMap.size() / (double) gcPeriod);
@@ -114,7 +115,7 @@ public class BeaconDisplay extends VisualizerRunnableDisplay implements Listener
                     delay++;
                 }
                 Entry<Block, Map<String, Object>> entry = itr.next();
-                Bukkit.getScheduler().runTaskLater(InteractionVisualizer.plugin, () -> {
+                Scheduler.runTaskLater(InteractionVisualizer.plugin, () -> {
                     Block block = entry.getKey();
                     if (!isActive(block.getLocation())) {
                         Map<String, Object> map = entry.getValue();
@@ -152,13 +153,13 @@ public class BeaconDisplay extends VisualizerRunnableDisplay implements Listener
                     }
                 }, delay);
             }
-        }, 0, gcPeriod).getTaskId();
+        }, 0, gcPeriod);
     }
 
     @Override
-    public int run() {
-        return Bukkit.getScheduler().runTaskTimerAsynchronously(InteractionVisualizer.plugin, () -> {
-            Bukkit.getScheduler().runTask(InteractionVisualizer.plugin, () -> {
+    public ScheduledTask run() {
+        return Scheduler.runTaskTimerAsynchronously(InteractionVisualizer.plugin, () -> {
+            Scheduler.runTask(InteractionVisualizer.plugin, () -> {
                 Set<Block> list = nearbyBeacon();
                 for (Block block : list) {
                     if (beaconMap.get(block) == null && isActive(block.getLocation())) {
@@ -184,7 +185,7 @@ public class BeaconDisplay extends VisualizerRunnableDisplay implements Listener
                     count = 0;
                     delay++;
                 }
-                Bukkit.getScheduler().runTaskLater(InteractionVisualizer.plugin, () -> {
+                Scheduler.runTaskLater(InteractionVisualizer.plugin, () -> {
                     Block block = entry.getKey();
                     if (!isActive(block.getLocation())) {
                         return;
@@ -288,7 +289,7 @@ public class BeaconDisplay extends VisualizerRunnableDisplay implements Listener
                     });
                 }, delay);
             }
-        }, 0, checkingPeriod).getTaskId();
+        }, 0, checkingPeriod);
     }
 
     @EventHandler(priority = EventPriority.MONITOR)

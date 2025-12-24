@@ -34,6 +34,7 @@ import com.loohp.interactionvisualizer.utils.InventoryUtils;
 import com.loohp.interactionvisualizer.utils.MaterialUtils;
 import com.loohp.interactionvisualizer.utils.MaterialUtils.MaterialMode;
 import com.loohp.interactionvisualizer.utils.VanishUtils;
+import com.loohp.platformscheduler.Scheduler;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.Bukkit;
 import org.bukkit.FluidCollisionMode;
@@ -278,8 +279,7 @@ public class SmithingTableDisplay extends VisualizerInteractDisplay implements L
             before.setItem(i, player.getOpenInventory().getItem(i).clone());
         }
 
-        Bukkit.getScheduler().runTaskLater(InteractionVisualizer.plugin, () -> {
-
+        Scheduler.runTaskLater(InteractionVisualizer.plugin, () -> {
             Inventory after = Bukkit.createInventory(null, 9);
             for (int i = 0; i <= maxSlot; i++) {
                 after.setItem(i, player.getOpenInventory().getItem(i).clone());
@@ -309,13 +309,13 @@ public class SmithingTableDisplay extends VisualizerInteractDisplay implements L
             PacketManager.updateArmorStand(slot1);
             PacketManager.updateArmorStand(slot2);
 
-            Bukkit.getScheduler().runTaskLater(InteractionVisualizer.plugin, () -> {
+            Scheduler.runTaskLater(InteractionVisualizer.plugin, () -> {
                 for (Player each : InteractionVisualizerAPI.getPlayerModuleList(Modules.ITEMDROP, KEY)) {
                     each.spawnParticle(Particle.CLOUD, loc.clone().add(0.5, 1.1, 0.5), 10, 0.05, 0.05, 0.05, 0.05);
                 }
             }, 6);
 
-            Bukkit.getScheduler().runTaskLater(InteractionVisualizer.plugin, () -> {
+            Scheduler.runTaskLater(InteractionVisualizer.plugin, () -> {
                 Vector lift = new Vector(0.0, 0.15, 0.0);
                 Vector pickup = player.getEyeLocation().add(0.0, -0.5, 0.0).add(0.0, InteractionVisualizer.playerPickupYOffset, 0.0).toVector().subtract(loc.clone().add(0.5, 1.2, 0.5).toVector()).multiply(0.15).add(lift);
                 item.setItemStack(itemstack);
@@ -324,7 +324,7 @@ public class SmithingTableDisplay extends VisualizerInteractDisplay implements L
                 item.setPickupDelay(32767);
                 PacketManager.updateItem(item);
 
-                Bukkit.getScheduler().runTaskLater(InteractionVisualizer.plugin, () -> {
+                Scheduler.runTaskLater(InteractionVisualizer.plugin, () -> {
                     SoundManager.playItemPickup(item.getLocation(), InteractionVisualizerAPI.getPlayerModuleList(Modules.ITEMDROP, KEY));
                     if (slot0 != null) {
                         PacketManager.removeArmorStand(InteractionVisualizerAPI.getPlayers(), slot0);
@@ -425,9 +425,9 @@ public class SmithingTableDisplay extends VisualizerInteractDisplay implements L
     }
 
     public void toggleStandMode(ArmorStand stand, String mode) {
-        String plain = PlainTextComponentSerializer.plainText().serialize(stand.getCustomName());
-        if (!plain.equals("IV.SmithingTable.Item")) {
-            if (plain.equals("IV.SmithingTable.Block")) {
+        String plainText = PlainTextComponentSerializer.plainText().serialize(stand.getCustomName());
+        if (!plainText.equals("IV.SmithingTable.Item")) {
+            if (plainText.equals("IV.SmithingTable.Block")) {
                 stand.setCustomName("IV.SmithingTable.Item");
                 stand.setRotation(stand.getLocation().getYaw() - 45, stand.getLocation().getPitch());
                 stand.setRightArmPose(EulerAngle.ZERO);
@@ -436,7 +436,7 @@ public class SmithingTableDisplay extends VisualizerInteractDisplay implements L
                 stand.teleport(stand.getLocation().add(stand.getLocation().clone().getDirection().normalize().multiply(-0.14)));
 
             }
-            if (plain.equals("IV.SmithingTable.LowBlock")) {
+            if (plainText.equals("IV.SmithingTable.LowBlock")) {
                 stand.setCustomName("IV.SmithingTable.Item");
                 stand.setRotation(stand.getLocation().getYaw() - 45, stand.getLocation().getPitch());
                 stand.setRightArmPose(EulerAngle.ZERO);
@@ -445,14 +445,14 @@ public class SmithingTableDisplay extends VisualizerInteractDisplay implements L
                 stand.teleport(stand.getLocation().add(stand.getLocation().clone().getDirection().normalize().multiply(-0.15)));
 
             }
-            if (plain.equals("IV.SmithingTable.Tool")) {
+            if (plainText.equals("IV.SmithingTable.Tool")) {
                 stand.setCustomName("IV.SmithingTable.Item");
                 stand.teleport(stand.getLocation().add(rotateVectorAroundY(stand.getLocation().clone().getDirection().normalize().multiply(0.3), -90)));
                 stand.teleport(stand.getLocation().add(stand.getLocation().clone().getDirection().normalize().multiply(0.1)));
                 stand.teleport(stand.getLocation().add(0, 0.26, 0));
                 stand.setRightArmPose(EulerAngle.ZERO);
             }
-            if (plain.equals("IV.SmithingTable.Standing")) {
+            if (plainText.equals("IV.SmithingTable.Standing")) {
                 stand.setCustomName("IV.SmithingTable.Item");
                 stand.teleport(stand.getLocation().add(rotateVectorAroundY(stand.getLocation().getDirection().normalize().multiply(0.323), -90)));
                 stand.teleport(stand.getLocation().add(stand.getLocation().getDirection().normalize().multiply(-0.115)));

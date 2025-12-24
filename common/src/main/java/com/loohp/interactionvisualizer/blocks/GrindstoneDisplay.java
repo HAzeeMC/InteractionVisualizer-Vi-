@@ -34,6 +34,7 @@ import com.loohp.interactionvisualizer.utils.LocationUtils;
 import com.loohp.interactionvisualizer.utils.MaterialUtils;
 import com.loohp.interactionvisualizer.utils.MaterialUtils.MaterialMode;
 import com.loohp.interactionvisualizer.utils.VanishUtils;
+import com.loohp.platformscheduler.Scheduler;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
@@ -258,8 +259,7 @@ public class GrindstoneDisplay extends VisualizerInteractDisplay implements List
         before.setItem(0, player.getOpenInventory().getItem(0).clone());
         before.setItem(1, player.getOpenInventory().getItem(1).clone());
 
-        Bukkit.getScheduler().runTaskLater(InteractionVisualizer.plugin, () -> {
-
+        Scheduler.runTaskLater(InteractionVisualizer.plugin, () -> {
             Inventory after = Bukkit.createInventory(null, 9);
             after.setItem(0, player.getOpenInventory().getItem(0).clone());
             after.setItem(1, player.getOpenInventory().getItem(1).clone());
@@ -282,13 +282,13 @@ public class GrindstoneDisplay extends VisualizerInteractDisplay implements List
             PacketManager.updateArmorStand(slot0);
             PacketManager.updateArmorStand(slot1);
 
-            Bukkit.getScheduler().runTaskLater(InteractionVisualizer.plugin, () -> {
+            Scheduler.runTaskLater(InteractionVisualizer.plugin, () -> {
                 for (Player each : InteractionVisualizerAPI.getPlayerModuleList(Modules.ITEMDROP, KEY)) {
                     each.spawnParticle(Particle.CLOUD, loc.clone().add(0.5, 1.1, 0.5), 10, 0.05, 0.05, 0.05, 0.05);
                 }
             }, 6);
 
-            Bukkit.getScheduler().runTaskLater(InteractionVisualizer.plugin, () -> {
+            Scheduler.runTaskLater(InteractionVisualizer.plugin, () -> {
                 Vector lift = new Vector(0.0, 0.15, 0.0);
                 Vector pickup = player.getEyeLocation().add(0.0, -0.5, 0.0).add(0.0, InteractionVisualizer.playerPickupYOffset, 0.0).toVector().subtract(loc.clone().add(0.5, 1.2, 0.5).toVector()).multiply(0.15).add(lift);
                 item.setItemStack(itemstack);
@@ -297,7 +297,7 @@ public class GrindstoneDisplay extends VisualizerInteractDisplay implements List
                 item.setPickupDelay(32767);
                 PacketManager.updateItem(item);
 
-                Bukkit.getScheduler().runTaskLater(InteractionVisualizer.plugin, () -> {
+                Scheduler.runTaskLater(InteractionVisualizer.plugin, () -> {
                     SoundManager.playItemPickup(item.getLocation(), InteractionVisualizerAPI.getPlayerModuleList(Modules.ITEMDROP, KEY));
                     PacketManager.removeArmorStand(InteractionVisualizerAPI.getPlayers(), slot0);
                     PacketManager.removeArmorStand(InteractionVisualizerAPI.getPlayers(), slot1);
@@ -419,9 +419,9 @@ public class GrindstoneDisplay extends VisualizerInteractDisplay implements List
     }
 
     public void toggleStandMode(ArmorStand stand, String mode) {
-        String plain = PlainTextComponentSerializer.plainText().serialize(stand.getCustomName());
-        if (!plain.equals("IV.Grindstone.Item")) {
-            if (plain.equals("IV.Grindstone.Block")) {
+        String plainText = PlainTextComponentSerializer.plainText().serialize(stand.getCustomName());
+        if (!plainText.equals("IV.Grindstone.Item")) {
+            if (plainText.equals("IV.Grindstone.Block")) {
                 stand.setCustomName("IV.Grindstone.Item");
                 stand.setRotation(stand.getLocation().getYaw() - 45, stand.getLocation().getPitch());
                 stand.setRightArmPose(EulerAngle.ZERO);
@@ -430,7 +430,7 @@ public class GrindstoneDisplay extends VisualizerInteractDisplay implements List
                 stand.teleport(stand.getLocation().add(stand.getLocation().clone().getDirection().normalize().multiply(-0.14)));
 
             }
-            if (plain.equals("IV.Grindstone.LowBlock")) {
+            if (plainText.equals("IV.Grindstone.LowBlock")) {
                 stand.setCustomName("IV.Grindstone.Item");
                 stand.setRotation(stand.getLocation().getYaw() - 45, stand.getLocation().getPitch());
                 stand.setRightArmPose(EulerAngle.ZERO);
@@ -439,14 +439,14 @@ public class GrindstoneDisplay extends VisualizerInteractDisplay implements List
                 stand.teleport(stand.getLocation().add(stand.getLocation().clone().getDirection().normalize().multiply(-0.15)));
 
             }
-            if (plain.equals("IV.Grindstone.Tool")) {
+            if (plainText.equals("IV.Grindstone.Tool")) {
                 stand.setCustomName("IV.Grindstone.Item");
                 stand.teleport(stand.getLocation().add(rotateVectorAroundY(stand.getLocation().clone().getDirection().normalize().multiply(0.3), -90)));
                 stand.teleport(stand.getLocation().add(stand.getLocation().clone().getDirection().normalize().multiply(0.1)));
                 stand.teleport(stand.getLocation().add(0, 0.26, 0));
                 stand.setRightArmPose(EulerAngle.ZERO);
             }
-            if (plain.equals("IV.Grindstone.Standing")) {
+            if (plainText.equals("IV.Grindstone.Standing")) {
                 stand.setCustomName("IV.Grindstone.Item");
                 stand.teleport(stand.getLocation().add(rotateVectorAroundY(stand.getLocation().getDirection().normalize().multiply(0.323), -90)));
                 stand.teleport(stand.getLocation().add(stand.getLocation().getDirection().normalize().multiply(-0.115)));

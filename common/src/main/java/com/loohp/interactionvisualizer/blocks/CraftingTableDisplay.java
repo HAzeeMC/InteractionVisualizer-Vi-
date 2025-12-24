@@ -35,6 +35,9 @@ import com.loohp.interactionvisualizer.utils.MCVersion;
 import com.loohp.interactionvisualizer.utils.MaterialUtils;
 import com.loohp.interactionvisualizer.utils.MaterialUtils.MaterialMode;
 import com.loohp.interactionvisualizer.utils.VanishUtils;
+import com.loohp.platformscheduler.ScheduledRunnable;
+import com.loohp.platformscheduler.ScheduledTask;
+import com.loohp.platformscheduler.Scheduler;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
@@ -77,8 +80,8 @@ public class CraftingTableDisplay extends VisualizerInteractDisplay implements L
     }
 
     @Override
-    public int run() {
-        return new BukkitRunnable() {
+    public ScheduledTask run() {
+        return new ScheduledRunnable() {
             public void run() {
                 Iterator<Block> itr = openedBenches.keySet().iterator();
                 int count = 0;
@@ -91,7 +94,7 @@ public class CraftingTableDisplay extends VisualizerInteractDisplay implements L
                         delay++;
                     }
                     Block block = itr.next();
-                    new BukkitRunnable() {
+                    new ScheduledRunnable() {
                         public void run() {
                             if (!openedBenches.containsKey(block)) {
                                 return;
@@ -135,7 +138,7 @@ public class CraftingTableDisplay extends VisualizerInteractDisplay implements L
                     }.runTaskLater(InteractionVisualizer.plugin, delay);
                 }
             }
-        }.runTaskTimer(InteractionVisualizer.plugin, 0, 5).getTaskId();
+        }.runTaskTimer(InteractionVisualizer.plugin, 0, 5);
     }
 
     @Override
@@ -361,7 +364,7 @@ public class CraftingTableDisplay extends VisualizerInteractDisplay implements L
             before.setItem(i - 1, player.getOpenInventory().getItem(i).clone());
         }
 
-        Bukkit.getScheduler().runTaskLater(InteractionVisualizer.plugin, () -> {
+        Scheduler.runTaskLater(InteractionVisualizer.plugin, () -> {
 
             Inventory after = Bukkit.createInventory(null, 9);
             for (int i = 1; i < 10; i++) {
@@ -407,13 +410,13 @@ public class CraftingTableDisplay extends VisualizerInteractDisplay implements L
             PacketManager.updateArmorStand(slot8);
             PacketManager.updateArmorStand(slot9);
 
-            Bukkit.getScheduler().runTaskLater(InteractionVisualizer.plugin, () -> {
+            Scheduler.runTaskLater(InteractionVisualizer.plugin, () -> {
                 for (Player each : InteractionVisualizerAPI.getPlayerModuleList(Modules.ITEMDROP, KEY)) {
                     each.spawnParticle(Particle.CLOUD, loc.clone().add(0.5, 1.1, 0.5), 10, 0.05, 0.05, 0.05, 0.05);
                 }
             }, 6);
 
-            Bukkit.getScheduler().runTaskLater(InteractionVisualizer.plugin, () -> {
+            Scheduler.runTaskLater(InteractionVisualizer.plugin, () -> {
                 Vector lift = new Vector(0.0, 0.15, 0.0);
                 Vector pickup = player.getEyeLocation().add(0.0, -0.5, 0.0).add(0.0, InteractionVisualizer.playerPickupYOffset, 0.0).toVector().subtract(loc.clone().add(0.5, 1.2, 0.5).toVector()).multiply(0.15).add(lift);
                 item.setItemStack(itemstack);
@@ -422,7 +425,7 @@ public class CraftingTableDisplay extends VisualizerInteractDisplay implements L
                 item.setPickupDelay(32767);
                 PacketManager.updateItem(item);
 
-                Bukkit.getScheduler().runTaskLater(InteractionVisualizer.plugin, () -> {
+                Scheduler.runTaskLater(InteractionVisualizer.plugin, () -> {
                     SoundManager.playItemPickup(item.getLocation(), InteractionVisualizerAPI.getPlayerModuleList(Modules.ITEMDROP, KEY));
                     PacketManager.removeArmorStand(InteractionVisualizerAPI.getPlayers(), slot1);
                     PacketManager.removeArmorStand(InteractionVisualizerAPI.getPlayers(), slot2);
@@ -497,7 +500,7 @@ public class CraftingTableDisplay extends VisualizerInteractDisplay implements L
                         PacketManager.removeArmorStand(InteractionVisualizerAPI.getPlayers(), (ArmorStand) entity);
                     }
                     int finalI = i;
-                    new BukkitRunnable() {
+                    new ScheduledRunnable() {
                         public void run() {
                             if (finalI == 5) {
                                 InteractionVisualizer.lightManager.deleteLight(((ArmorStand) entity).getLocation());
@@ -520,9 +523,9 @@ public class CraftingTableDisplay extends VisualizerInteractDisplay implements L
     }
 
     public void toggleStandMode(ArmorStand stand, String mode) {
-        String plain = PlainTextComponentSerializer.plainText().serialize(stand.getCustomName());
-        if (!plain.equals("IV.CraftingTable.Item")) {
-            if (plain.equals("IV.CraftingTable.Block")) {
+        String plainText = PlainTextComponentSerializer.plainText().serialize(stand.getCustomName());
+        if (!plainText.equals("IV.CraftingTable.Item")) {
+            if (plainText.equals("IV.CraftingTable.Block")) {
                 stand.setCustomName("IV.CraftingTable.Item");
                 stand.setRotation(stand.getLocation().getYaw() - 45, stand.getLocation().getPitch());
                 stand.setRightArmPose(EulerAngle.ZERO);
@@ -531,7 +534,7 @@ public class CraftingTableDisplay extends VisualizerInteractDisplay implements L
                 stand.teleport(stand.getLocation().add(stand.getLocation().clone().getDirection().normalize().multiply(-0.14)));
 
             }
-            if (plain.equals("IV.CraftingTable.LowBlock")) {
+            if (plainText.equals("IV.CraftingTable.LowBlock")) {
                 stand.setCustomName("IV.CraftingTable.Item");
                 stand.setRotation(stand.getLocation().getYaw() - 45, stand.getLocation().getPitch());
                 stand.setRightArmPose(EulerAngle.ZERO);
@@ -540,14 +543,14 @@ public class CraftingTableDisplay extends VisualizerInteractDisplay implements L
                 stand.teleport(stand.getLocation().add(stand.getLocation().clone().getDirection().normalize().multiply(-0.15)));
 
             }
-            if (plain.equals("IV.CraftingTable.Tool")) {
+            if (plainText.equals("IV.CraftingTable.Tool")) {
                 stand.setCustomName("IV.CraftingTable.Item");
                 stand.teleport(stand.getLocation().add(rotateVectorAroundY(stand.getLocation().clone().getDirection().normalize().multiply(0.3), -90)));
                 stand.teleport(stand.getLocation().add(stand.getLocation().clone().getDirection().normalize().multiply(0.1)));
                 stand.teleport(stand.getLocation().add(0, 0.26, 0));
                 stand.setRightArmPose(EulerAngle.ZERO);
             }
-            if (plain.equals("IV.CraftingTable.Standing")) {
+            if (plainText.equals("IV.CraftingTable.Standing")) {
                 stand.setCustomName("IV.CraftingTable.Item");
                 stand.teleport(stand.getLocation().add(rotateVectorAroundY(stand.getLocation().getDirection().normalize().multiply(0.323), -90)));
                 stand.teleport(stand.getLocation().add(stand.getLocation().getDirection().normalize().multiply(-0.115)));

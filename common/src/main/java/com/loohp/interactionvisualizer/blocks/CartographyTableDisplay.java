@@ -28,6 +28,8 @@ import com.loohp.interactionvisualizer.entityholders.ItemFrame;
 import com.loohp.interactionvisualizer.managers.PacketManager;
 import com.loohp.interactionvisualizer.objectholders.EntryKey;
 import com.loohp.interactionvisualizer.utils.VanishUtils;
+import com.loohp.platformscheduler.ScheduledRunnable;
+import com.loohp.platformscheduler.ScheduledTask;
 import org.bukkit.FluidCollisionMode;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
@@ -44,7 +46,6 @@ import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.inventory.CartographyInventory;
 import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -63,8 +64,8 @@ public class CartographyTableDisplay extends VisualizerInteractDisplay implement
     }
 
     @Override
-    public int run() {
-        return new BukkitRunnable() {
+    public ScheduledTask run() {
+        return new ScheduledRunnable() {
             public void run() {
 
                 Iterator<Block> itr = openedCTable.keySet().iterator();
@@ -78,7 +79,7 @@ public class CartographyTableDisplay extends VisualizerInteractDisplay implement
                         delay++;
                     }
                     Block block = itr.next();
-                    new BukkitRunnable() {
+                    new ScheduledRunnable() {
                         public void run() {
                             if (!openedCTable.containsKey(block)) {
                                 return;
@@ -106,7 +107,7 @@ public class CartographyTableDisplay extends VisualizerInteractDisplay implement
                     }.runTaskLater(InteractionVisualizer.plugin, delay);
                 }
             }
-        }.runTaskTimer(InteractionVisualizer.plugin, 0, 6).getTaskId();
+        }.runTaskTimer(InteractionVisualizer.plugin, 0, 6);
     }
 
     @Override

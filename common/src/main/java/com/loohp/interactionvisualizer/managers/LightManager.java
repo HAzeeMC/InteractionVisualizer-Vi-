@@ -23,7 +23,8 @@ package com.loohp.interactionvisualizer.managers;
 import com.loohp.interactionvisualizer.InteractionVisualizer;
 import com.loohp.interactionvisualizer.objectholders.ILightManager;
 import com.loohp.interactionvisualizer.objectholders.LightData;
-import org.bukkit.Bukkit;
+import com.loohp.platformscheduler.ScheduledTask;
+import com.loohp.platformscheduler.Scheduler;
 import org.bukkit.Location;
 import ru.beykerykt.lightapi.LightAPI;
 import ru.beykerykt.lightapi.LightType;
@@ -73,8 +74,8 @@ public class LightManager implements ILightManager {
     }
 
     @Override
-    public int run() {
-        return Bukkit.getScheduler().runTaskTimer(plugin, () -> {
+    public ScheduledTask run() {
+        return Scheduler.runTaskTimer(plugin, () -> {
             boolean changed = false;
 
             Queue<LightData> updateQueue = new LinkedList<>();
@@ -142,7 +143,7 @@ public class LightManager implements ILightManager {
                     LightAPI.updateChunk(info, LightType.BLOCK);
                 }
             }
-        }, 0, InteractionVisualizer.lightUpdatePeriod).getTaskId();
+        }, 0, InteractionVisualizer.lightUpdatePeriod);
     }
 
 }

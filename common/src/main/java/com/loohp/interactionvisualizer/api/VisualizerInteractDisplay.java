@@ -22,7 +22,7 @@ package com.loohp.interactionvisualizer.api;
 
 import com.loohp.interactionvisualizer.managers.TaskManager;
 import com.loohp.interactionvisualizer.objectholders.EntryKey;
-import org.bukkit.Bukkit;
+import com.loohp.platformscheduler.ScheduledTask;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryType;
 
@@ -38,7 +38,7 @@ public abstract class VisualizerInteractDisplay implements VisualizerDisplay {
      * DO NOT CHANGE THESE FIELD
      */
     private InventoryType[] types;
-    private Set<Integer> tasks;
+    private Set<ScheduledTask> tasks;
 
     /**
      * This method will be called whenever a player opens the InventoryType registered.
@@ -46,10 +46,10 @@ public abstract class VisualizerInteractDisplay implements VisualizerDisplay {
     public abstract void process(Player player);
 
     /**
-     * This method is used if you need a runnable, return the task id, return -1 to disable
+     * This method is used if you need a runnable, return the ScheduledTask, return null to disable.
      */
-    public int run() {
-        return -1;
+    public ScheduledTask run() {
+        return null;
     }
 
     /**
@@ -88,8 +88,8 @@ public abstract class VisualizerInteractDisplay implements VisualizerDisplay {
             TaskManager.processes.get(type).add(this);
         }
         this.tasks = new HashSet<>();
-        int run = run();
-        if (run >= 0) {
+        ScheduledTask run = run();
+        if (run != null) {
             this.tasks.add(run);
         }
     }
@@ -107,8 +107,8 @@ public abstract class VisualizerInteractDisplay implements VisualizerDisplay {
             TaskManager.processes.get(type).add(this);
         }
         this.tasks = new HashSet<>();
-        int run = run();
-        if (run >= 0) {
+        ScheduledTask run = run();
+        if (run != null) {
             this.tasks.add(run);
         }
         return key();
@@ -123,7 +123,7 @@ public abstract class VisualizerInteractDisplay implements VisualizerDisplay {
         for (InventoryType type : types) {
             TaskManager.processes.get(type).remove(this);
         }
-        this.tasks.forEach(each -> Bukkit.getScheduler().cancelTask(each));
+        this.tasks.forEach(each -> each.cancel());
     }
 
 }
