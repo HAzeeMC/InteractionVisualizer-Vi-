@@ -1,5 +1,5 @@
 Database:
-  #Player data storage type, MYSQL or SQLITE
+  # Loại lưu trữ dữ liệu người chơi: MYSQL hoặc SQLITE
   Type: "SQLITE"
   MYSQL:
     Host: "localhost"
@@ -9,109 +9,102 @@ Database:
     Password: "password"
 
 Messages:
-  NoPermission: "&cYou do not have permission to use that command!"
-  Reload: "&aInteractionVisualizer successfully reloaded!"
+  NoPermission: "&cBạn không có quyền sử dụng lệnh này!"
+  Reload: "&aĐã tải lại InteractionVisualizer thành công!"
   Toggle:
-    Usage: "&cUsage: /interactionvisualizer toggle <itemstand/itemdrop/hologram> <block/entry> <true/false>"
-    Modes: "&cToggle Modes: itemstand, itemdrop, hologram"
-    Entries: "&cToggle Entries: %s"
-    Console: "&cPlease provide a player name: /interactionvisualizer toggle <mode> <block/entry> <true/false> [player]"
-    ToggleOn: "&aToggled %e %m on"
-    ToggleOff: "&eToggled %e %m off"
-    PlayerNotFound: "&cThe player is not online!"
-    All: "All"
-  #User-friendly names for the modules
+    Usage: "&cSử dụng: /interactionvisualizer toggle <itemstand/itemdrop/hologram> <block/entry> <true/false>"
+    Modes: "&cChế độ: itemstand, itemdrop, hologram"
+    Entries: "&cDanh sách mục: %s"
+    Console: "&cVui lòng nhập tên người chơi: /interactionvisualizer toggle <mode> <block/entry> <true/false> [player]"
+    ToggleOn: "&aĐã bật hiển thị %e %m"
+    ToggleOff: "&eĐã tắt hiển thị %e %m"
+    PlayerNotFound: "&cNgười chơi không trực tuyến!"
+    All: "Tất cả"
+  # Tên hiển thị thân thiện cho các mô-đun
   ModuleName:
-    hologram: "Holograms"
-    itemstand: "ItemStands"
-    itemdrop: "ItemDrops"
-  #User-friendly names for the entries
+    hologram: "Hình chiếu (Holograms)"
+    itemstand: "Giá đỡ (ItemStands)"
+    itemdrop: "Vật phẩm rơi (ItemDrops)"
+  # Tên hiển thị thân thiện cho các mục tương tác
   EntryName:
-    "interactionvisualizer:crafting_table": "Crafting Table"
-    "interactionvisualizer:crafter": "Crafter"
-    "interactionvisualizer:loom": "Loom"
-    "interactionvisualizer:enchantment_table": "Enchantment Table"
-    "interactionvisualizer:cartography_table": "Cartography Table"
-    "interactionvisualizer:anvil": "Anvil"
-    "interactionvisualizer:grindstone": "Grindstone"
-    "interactionvisualizer:stonecutter": "Stonecutter"
-    "interactionvisualizer:brewing_stand": "Brewing Stand"
-    "interactionvisualizer:chest": "Chest"
-    "interactionvisualizer:double_chest": "Double Chest"
-    "interactionvisualizer:furnace": "Furnace"
-    "interactionvisualizer:blast_furnace": "Blast Furnace"
-    "interactionvisualizer:smoker": "Smoker"
-    "interactionvisualizer:ender_chest": "Ender Chest"
-    "interactionvisualizer:shulker_box": "Shulker Box"
-    "interactionvisualizer:dispenser": "Dispenser"
-    "interactionvisualizer:dropper": "Dropper"
-    "interactionvisualizer:hopper": "Hopper"
-    "interactionvisualizer:beacon": "Beacon"
-    "interactionvisualizer:note_block": "Note Block"
-    "interactionvisualizer:jukebox": "Jukebox"
-    "interactionvisualizer:smithing_table": "Smithing Table"
-    "interactionvisualizer:bee_nest": "Bee Nest"
-    "interactionvisualizer:beehive": "Beehive"
-    "interactionvisualizer:lectern": "Lectern"
-    "interactionvisualizer:campfire": "Campfire"
-    "interactionvisualizer:soul_campfire": "Soul Campfire"
-    "interactionvisualizer:spawner": "Spawner"
-    "interactionvisualizer:conduit": "Conduit"
+    "interactionvisualizer:crafting_table": "Bàn chế tạo"
+    "interactionvisualizer:crafter": "Máy chế tạo"
+    "interactionvisualizer:loom": "Máy dệt"
+    "interactionvisualizer:enchantment_table": "Bàn phù phép"
+    "interactionvisualizer:cartography_table": "Bàn bản đồ"
+    "interactionvisualizer:anvil": "Cái đe"
+    "interactionvisualizer:grindstone": "Đe mài"
+    "interactionvisualizer:stonecutter": "Máy cắt đá"
+    "interactionvisualizer:brewing_stand": "Giàn pha thuốc"
+    "interactionvisualizer:chest": "Rương"
+    "interactionvisualizer:double_chest": "Rương đôi"
+    "interactionvisualizer:furnace": "Lò nung"
+    "interactionvisualizer:blast_furnace": "Lò luyện kim"
+    "interactionvisualizer:smoker": "Lò hun khói"
+    "interactionvisualizer:ender_chest": "Rương Ender"
+    "interactionvisualizer:shulker_box": "Hộp Shulker"
+    "interactionvisualizer:dispenser": "Máy phân phát"
+    "interactionvisualizer:dropper": "Máy thả vật phẩm"
+    "interactionvisualizer:hopper": "Phễu"
+    "interactionvisualizer:beacon": "Đèn biển (Beacon)"
+    "interactionvisualizer:note_block": "Khối nhạc"
+    "interactionvisualizer:jukebox": "Hộp nhạc"
+    "interactionvisualizer:smithing_table": "Bàn rèn"
+    "interactionvisualizer:bee_nest": "Tổ ong"
+    "interactionvisualizer:beehive": "Thùng ong"
+    "interactionvisualizer:lectern": "Bục giảng"
+    "interactionvisualizer:campfire": "Lửa trại"
+    "interactionvisualizer:soul_campfire": "Lửa trại linh hồn"
+    "interactionvisualizer:spawner": "Lồng quái"
+    "interactionvisualizer:conduit": "Ống dẫn"
     "interactionvisualizer:banner": "Banner"
-    "interactionvisualizer:item": "Item"
-    "interactionvisualizer:villager": "Villager"
-    "bookshelf:bookshelf": "Bookshelf"
+    "interactionvisualizer:item": "Vật phẩm"
+    "interactionvisualizer:villager": "Dân làng"
+    "bookshelf:bookshelf": "Kệ sách"
 
 GarbageCollector:
-  #How often should the plugin sweep up and remove tile entity blocks that no longer needs to be tracked
-  #Measured in ticks, 20 ticks = 1 second
-  #Adjust this if your server is unable to handle fast updates
+  # Tần suất plugin dọn dẹp các thực thể khối không cần theo dõi nữa
+  # Tính bằng tick, 20 ticks = 1 giây
+  # Điều chỉnh nếu máy chủ không xử lý kịp các cập nhật nhanh
   Period: 600
 
 TileEntityUpdate:
-  #The plugin will ignore players that are travelling faster than this speed
-  #when updating tile entities
-  #This is horizontal speed
+  # Plugin sẽ bỏ qua người chơi nếu họ di chuyển nhanh hơn tốc độ này
+  # Đây là tốc độ di chuyển ngang (horizontal speed)
   IgnoreMovementSpeed:
     Normal: 1.31
     Flying: 1.49
     Gliding: 1.23
-  #The range in which tile entities in chunks around the player are checked
-  #A range of 0 means only the chunk where the player is standing in is checked
+  # Phạm vi kiểm tra các khối xung quanh người chơi (tính bằng chunk)
+  # 0 nghĩa là chỉ kiểm tra chunk người chơi đang đứng
   CheckingRange: 1
 
 LightUpdate:
-  #How often should the plugin update the light level a block that requires it is used
-  #Only used if LightAPI is installed
-  #Measured in ticks, 20 ticks = 1 second
-  #Adjust this if your server is unable to handle fast light updates
+  # Tần suất cập nhật cấp độ ánh sáng khi một khối yêu cầu ánh sáng được dùng
+  # Chỉ hoạt động nếu có cài đặt LightAPI
   Period: 10
 
-#Enable InteractionVisualizer for these blocks
-#You might have to restart for changes to take effect
+# Bật InteractionVisualizer cho các khối sau
+# Bạn có thể cần khởi động lại server để thay đổi có hiệu lực
 Blocks:
   Anvil:
     Enabled: true
   Banner:
     Enabled: true
     Options:
-      #Banners that matches will not have the display shown
+      # Các Banner khớp tên sẽ không hiển thị
       Blacklist:
-        #Strip color codes when matching names
         StripColorWhenMatching: true
-        #Regex name match
+        # Danh sách Regex
         List:
           - "Ominous Banner|block\\.minecraft\\.ominous_banner"
   Barrel:
     Enabled: true
   Beacon:
     Enabled: true
-    #How often should the plugin check for block updates
-    #Measured in ticks, 20 ticks = 1 second
-    #Adjust this if your server is unable to handle fast updates / can handle faster updates
+    # Tần suất kiểm tra cập nhật khối (20 ticks = 1 giây)
     CheckingPeriod: 20
-    #How should the display text follow the player
-    #Accepts FACE, SQUARE, CIRCLE
+    # Cách văn bản hiển thị xoay theo người chơi: FACE, SQUARE, CIRCLE
     PathType: "FACE"
   BeeHive:
     Enabled: true
@@ -121,7 +114,7 @@ Blocks:
       EmptyColor: "&7"
       FilledColor: "&e"
       NoCampfireColor: "&c"
-      BeeCountText: "&e{Current}&6/{Max}"
+      BeeCountText: "&eSố ong: {Current}&6/{Max}"
   BeeNest:
     Enabled: true
     CheckingPeriod: 20
@@ -130,7 +123,7 @@ Blocks:
       EmptyColor: "&7"
       FilledColor: "&e"
       NoCampfireColor: "&c"
-      BeeCountText: "&e{Current}&6/{Max}"
+      BeeCountText: "&eSố ong: {Current}&6/{Max}"
   BlastFurnace:
     Enabled: true
     CheckingPeriod: 10
@@ -250,7 +243,7 @@ Blocks:
         - "enchantment.minecraft.quick_charge"
         - "enchantment.minecraft.piercing"
       CustomDefinedEnchantmentNames:
-        "myplugin:mycustomenchant": "My Cool Enchant"
+        "myplugin:mycustomenchant": "Phù phép tùy chỉnh"
   EnderChest:
     Enabled: true
   Furnace:
@@ -271,7 +264,7 @@ Blocks:
     Enabled: true
     CheckingPeriod: 20
     Options:
-      #Whether to have the name of the disc displayed or not
+      # Có hiển thị tên đĩa nhạc hay không
       ShowDiscName: true
   Lectern:
     Enabled: true
@@ -314,7 +307,7 @@ Blocks:
       EmptyColor: "&c"
       FilledColor: "&a"
       ProgressBarLength: 10
-      SpawnRange: " &f{SpawnRange}m"
+      SpawnRange: " &fPhạm vi: {SpawnRange}m"
   Stonecutter:
     Enabled: true
 
@@ -322,24 +315,20 @@ Entities:
   Item:
     Enabled: true
     Options:
-      #Items that matches will not have the display shown
+      # Vật phẩm khớp sẽ không hiển thị thông tin
       Blacklist:
-        #Strip color codes when matching names
         StripColorWhenMatching: true
-        #Regex name match and material match
-        #The first entry in each item on the list is a regex matching the item's name
-        #The second entry is the material name
+        # Danh sách vật phẩm bị chặn hiển thị thông tin
         List:
           - ["^ALTAR Probe.*", "NETHER_STAR"]
           - ["^Blacklisted Item$", "*"]
-      RegularFormat: "{Item} &bx{Amount} &6[{Timer}&6]"
-      SingularFormat: "{Item} &6[{Timer}&6]"
-      ToolsFormat: "{Item} &6[{Durability}&6]"
-      #Hide if there is more than this defined amount of item entities in one block
+      RegularFormat: "{Item} &bx{Amount} &6[{Timer} giây&6]"
+      SingularFormat: "{Item} &6[{Timer} giây&6]"
+      ToolsFormat: "{Item} &6[Độ bền: {Durability}&6]"
+      # Ẩn nếu có nhiều hơn số lượng thực thể vật phẩm này trong một khối
       Cramping: 6
-      #How often the item display updates
-      #This is in ticks (20 ticks = 1 second)
-      #Setting this too low might impact performance
+      # Tốc độ cập nhật hiển thị vật phẩm (20 ticks = 1 giây)
+      # Đặt quá thấp có thể gây lag
       UpdateRate: 20
       Color:
         High: "&a"
@@ -348,13 +337,11 @@ Entities:
   Villager:
     Enabled: true
 
-#Enable these modules for InteractionVisualizer displays
-#ItemStand represents all displays using armorstands and itemframes
-#ItemDrop represents all displays using dropped items
-#Hologram represents all holographic displays using armorstands
-#OverridingDisabled accepts a list of entry keys
-#Which force disables a module for a display type regardless of player preference
-#An example of an entry key is "interactionvisualizer:crafting_table"
+# Bật các mô-đun hiển thị
+# ItemStand: Giá đỡ áo giáp hoặc khung vật phẩm
+# ItemDrop: Vật phẩm đang rơi
+# Hologram: Hình chiếu chữ nổi
+# OverridingDisabled: Buộc tắt mô-đun cho một mục cụ thể bất kể người chơi có bật hay không
 Modules:
   ItemStand:
     Enabled: true
@@ -367,19 +354,17 @@ Modules:
     OverridingDisabled: []
 
 Settings:
-  #Whether everything should be disabled to the player by default
+  # Mặc định tắt tất cả hiển thị cho người chơi mới
   DefaultDisableAll: false
-  #Set to true if you are having async issues
+  # Bật nếu bạn gặp vấn đề về đồng bộ (async issues)
   SendAllPacketsInSync: false
   UseHandSwingAnimation: true
   PickupAnimationPlayerYOffset: 0
   DisabledWorlds: []
-  #MIGHT BE RESOURCE INTENSIVE
-  #MIGHT BE RESOURCE INTENSIVE
-  #MIGHT BE RESOURCE INTENSIVE
+  # CẢNH BÁO: CÓ THỂ GÂY NẶNG MÁY (RESOURCE INTENSIVE)
+  # Ẩn hiển thị nếu tầm nhìn bị che khuất
   HideIfViewObstructed: false
 
 Options:
   Updater: true
   DownloadLanguageFiles: true
-  
